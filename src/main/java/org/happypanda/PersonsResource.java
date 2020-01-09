@@ -7,13 +7,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.transaction.Transactional;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 @Path("/api/v1")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class PersonsResource {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GreetingsResource.class);
@@ -22,12 +23,20 @@ public class PersonsResource {
     private PersonsService personsService;
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/persons")
     public List<Person> getAllPersons() {
         List<Person> persons = personsService.getPersons();
         LOGGER.info(persons.toString());
         return persons;
+    }
+
+    @POST
+    @Path("/person")
+    @Transactional
+    public Person addPerson(Person person) {
+        Person personEntity = personsService.addPerson(person);
+        LOGGER.info(personEntity.toString());
+        return personEntity;
     }
 }
 
