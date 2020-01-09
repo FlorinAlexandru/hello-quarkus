@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Entity
 public class Person {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "person_id_seq")
     private Long id;
 
     @Column(name = "first_name")
@@ -14,6 +14,14 @@ public class Person {
 
     @Column(name = "last_name")
     private String lastName;
+
+    public Person() {
+    }
+
+    public Person(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 
     public Long getId() {
         return id;
